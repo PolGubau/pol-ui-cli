@@ -23,16 +23,16 @@ jobs:
           node-version: lts/*
           cache: "yarn"
 
-      - name: Install NPM Dependencies
+      - name: 📥 Install NPM Dependencies
         run: yarn install --immutable
 
       # - name: Check for errors
       #   run: yarn format:check
 
-      - name: Build the package
+      - name: 🧪 Build the package
         run: yarn build
 
-      - name: Create Version PR or Publish to NPM
+      - name: 🚀 Create Version PR or Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.1
         with:
