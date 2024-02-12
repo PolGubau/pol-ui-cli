@@ -28,7 +28,9 @@
   ],
   "type": "module",
   "exports": "./dist/index.js",
-  "bin": "dist/index.js",
+  "bin": {
+    "create-pol-ui": "dist/index.js"
+  },
   "files": [
     "dist",
     "template",
