@@ -1,13 +1,12 @@
-import { envVariablesInstaller } from "~/installers/envVars.js";
-import { nextAuthInstaller } from "~/installers/nextAuth.js";
-import { prismaInstaller } from "~/installers/prisma.js";
-import { tailwindInstaller } from "~/installers/tailwind.js";
+   import { tailwindInstaller } from "~/installers/tailwind.js";
  import { type PackageManager } from "~/utils/getUserPkgManager.js";
+import { polUiInstaller } from "./polui.js";
   
 // Turning this into a const allows the list to be iterated over for programatically creating prompt options
 // Should increase extensability in the future
 export const availablePackages = [
-  "tailwind",   
+  "tailwind",
+  "pol-ui",
 ] as const;
 export type AvailablePackages = (typeof availablePackages)[number];
  
@@ -17,7 +16,6 @@ export interface InstallerOptions {
   pkgManager: PackageManager;
   noInstall: boolean;
   packages?: PkgInstallerMap;
-  appRouter?: boolean;
   projectName: string;
   scopedAppName: string;
  }
@@ -34,15 +32,17 @@ export type PkgInstallerMap = {
 export const buildPkgInstallerMap = (
   packages: AvailablePackages[],
  ): PkgInstallerMap => ({
-  // nextAuth: {
-  //   inUse: packages.includes("nextAuth"),
-  //   installer: nextAuthInstaller,
-  // },
+ 
  
   tailwind: {
     inUse: packages.includes("tailwind"),
     installer: tailwindInstaller,
   },
+   
+  'pol-ui': {
+    inUse: packages.includes("pol-ui"),
+    installer: polUiInstaller,
+   }
   
   
  

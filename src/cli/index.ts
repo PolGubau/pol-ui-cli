@@ -3,11 +3,9 @@ import chalk from "chalk";
 import { Command } from "commander";
 
 import { COMMAND_NAME, DEFAULT_APP_NAME } from "~/consts.js";
-import {
-   type AvailablePackages,
- } from "~/installers/index.js";
-import { getVersion } from "~/utils/getVersion.js";
+import { type AvailablePackages } from "~/installers/index.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
+import { getVersion } from "~/utils/getVersion.js";
 import { IsTTYError } from "~/utils/isTTYError.js";
 import { logger } from "~/utils/logger.js";
 import { validateAppName } from "~/utils/validateAppName.js";
@@ -21,26 +19,25 @@ interface CliFlags {
 
   /** @internal Used in CI. */
   CI: boolean;
-  
 }
 
 interface CliResults {
   appName: string;
   packages: AvailablePackages[];
   flags: CliFlags;
- }
+}
 
 const defaultOptions: CliResults = {
   appName: DEFAULT_APP_NAME,
-  packages: ['tailwind'],
+  packages: ["tailwind"],
   flags: {
     noGit: false,
     noInstall: false,
     default: false,
     CI: false,
-      
+
     importAlias: "~/",
-   },
+  },
 };
 
 export const runCli = async (): Promise<CliResults> => {
@@ -67,9 +64,8 @@ export const runCli = async (): Promise<CliResults> => {
       "-y, --default",
       "Bypass the CLI and use all default options to bootstrap a new t3-app",
       false
-  )
-    
-    
+    )
+
     /** START CI-FLAGS */
     /**
      * @experimental Used for CI E2E tests. If any of the following option-flags are provided, we
@@ -82,14 +78,14 @@ export const runCli = async (): Promise<CliResults> => {
       "Experimental: Boolean value if we should install Tailwind CSS. Must be used in conjunction with `--CI`.",
       (value) => !!value && value !== "false"
     )
-   
+
     /** @experimental - Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
     .option(
       "-i, --import-alias",
       "Explicitly tell the CLI to use a custom import alias",
       defaultOptions.flags.importAlias
     )
-   
+
     /** END CI-FLAGS */
     .version(getVersion(), "-v, --version", "Display the version number")
     .addHelpText(
@@ -103,7 +99,6 @@ export const runCli = async (): Promise<CliResults> => {
         .underline("https://cursosAlbert.com")} \n`
     )
     .parse(process.argv);
-
 
   if (process.env.npm_config_user_agent?.startsWith("yarn/3")) {
     logger.warn(`  WARNING: It looks like you are using Yarn 3. This is currently not supported,
@@ -126,7 +121,6 @@ export const runCli = async (): Promise<CliResults> => {
 
     // Use always tailwind for now
     cliResults.packages.push("tailwind");
- 
 
     return cliResults;
   }
@@ -138,7 +132,7 @@ export const runCli = async (): Promise<CliResults> => {
   // Explained below why this is in a try/catch block
   try {
     if (process.env.TERM_PROGRAM?.toLowerCase().includes("mintty")) {
-      logger.warn(`  WARNING: It looks like you are using MinTTY, which is non-interactive. This is most likely because you are 
+      logger.warn(` 🔸 WARNING: It looks like you are using MinTTY, which is non-interactive. This is most likely because you are 
   using Git Bash. If that's that case, please use Git Bash from another terminal, such as Windows Terminal. Alternatively, you 
   can provide the arguments from the CLI directly: https://create.t3.gg/en/installation#experimental-usage to skip the prompts.`);
 
@@ -157,6 +151,7 @@ export const runCli = async (): Promise<CliResults> => {
               message: "What will your project be called?",
               defaultValue: cliProvidedName,
               validate: validateAppName,
+              placeholder: cliProvidedName,
             }),
         }),
         language: () => {
@@ -173,60 +168,7 @@ export const runCli = async (): Promise<CliResults> => {
           results.language === "javascript"
             ? p.note(chalk.redBright("Wrong answer, using TypeScript instead"))
             : undefined,
-        styling: () => {
-          return p.confirm({
-            message: "Will you be using Tailwind CSS for styling?",
-          });
-        },
-        trpc: () => {
-          return p.confirm({
-            message: "Would you like to use tRPC?",
-          });
-        },
-        authentication: () => {
-          return p.select({
-            message: "What authentication provider would you like to use?",
-            options: [
-              { value: "none", label: "None" },
-              { value: "next-auth", label: "NextAuth.js" },
-              // Maybe later
-              // { value: "clerk", label: "Clerk" },
-            ],
-            initialValue: "none",
-          });
-        },
-        database: () => {
-          return p.select({
-            message: "What database ORM would you like to use?",
-            options: [
-              { value: "none", label: "None" },
-              { value: "prisma", label: "Prisma" },
-              { value: "drizzle", label: "Drizzle" },
-            ],
-            initialValue: "none",
-          });
-        },
-        appRouter: () => {
-          return p.confirm({
-            message:
-              chalk.bgCyan(" EXPERIMENTAL ") +
-              " Would you like to use Next.js App Router?",
-            initialValue: false,
-          });
-        },
-        databaseProvider: ({ results }) => {
-          if (results.database === "none") return;
-          return p.select({
-            message: "What database provider would you like to use?",
-            options: [
-              { value: "sqlite", label: "SQLite" },
-              { value: "mysql", label: "MySQL" },
-              { value: "postgres", label: "PostgreSQL" },
-              { value: "planetscale", label: "Planetscale" },
-            ],
-            initialValue: "sqlite",
-          });
-        },
+
         ...(!cliResults.flags.noGit && {
           git: () => {
             return p.confirm({
@@ -263,16 +205,16 @@ export const runCli = async (): Promise<CliResults> => {
     );
 
     const packages: AvailablePackages[] = [];
-    if (project.styling) packages.push("tailwind");
+    packages.push("tailwind");
     //  add more packages here if needed
 
     return {
       appName: project.name ?? cliResults.appName,
       packages,
-   
+
       flags: {
         ...cliResults.flags,
-         noGit: !project.git || cliResults.flags.noGit,
+        noGit: !project.git || cliResults.flags.noGit,
         noInstall: !project.install || cliResults.flags.noInstall,
         importAlias: project.importAlias ?? cliResults.flags.importAlias,
       },

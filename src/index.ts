@@ -21,8 +21,8 @@ import {
   renderVersionWarning,
 } from "./utils/renderVersionWarning.js";
 
-type CT3APackageJSON = PackageJson & {
-  ct3aMetadata?: {
+type PackageJSON = PackageJson & {
+  Metadata?: {
     initVersion: string;
   };
 };
@@ -37,7 +37,6 @@ const main = async () => {
     appName,
     packages,
     flags: { noGit, noInstall, importAlias },
-    
   } = await runCli();
 
   const usePackages = buildPkgInstallerMap(packages);
@@ -56,9 +55,9 @@ const main = async () => {
   // Write name to package.json
   const pkgJson = fs.readJSONSync(
     path.join(projectDir, "package.json")
-  ) as CT3APackageJSON;
+  ) as PackageJSON;
   pkgJson.name = scopedAppName;
-  pkgJson.ct3aMetadata = { initVersion: getVersion() };
+  pkgJson.Metadata = { initVersion: getVersion() };
 
   // ? Bun doesn't support this field (yet)
   if (pkgManager !== "bun") {

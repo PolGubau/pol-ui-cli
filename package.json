@@ -1,6 +1,6 @@
 {
   "name": "create-pol-ui",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Create web application using pol-ui",
   "license": "MIT",
   "repository": {
@@ -60,7 +60,6 @@
     "sort-package-json": "^2.4.1"
   },
   "devDependencies": {
-   
     "@types/fs-extra": "^11.0.1",
     "@types/gradient-string": "^1.1.2",
     "@types/node": "^18.17.0",

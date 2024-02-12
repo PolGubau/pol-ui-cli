@@ -75,7 +75,7 @@ export const scaffoldProject = async ({
 
       if (overwriteDir === "clear") {
         spinner.info(
-          `Emptying ${chalk.cyan.bold(projectName)} and creating t3 app..\n`
+          `Emptying ${chalk.cyan.bold(projectName)} and creating pol-ui...\n`
         );
         fs.emptyDirSync(projectDir);
       }
@@ -94,6 +94,6 @@ export const scaffoldProject = async ({
     projectName === "." ? "App" : chalk.cyan.bold(projectName);
 
   spinner.succeed(
-    `${scaffoldedName} ${chalk.green("scaffolded successfully!")}\n`
+    `${scaffoldedName} ${chalk.green("Your new Pol-ui app is ready!")}\n`
   );
 };
