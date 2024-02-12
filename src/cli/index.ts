@@ -23,44 +23,26 @@ interface CliFlags {
 
   /** @internal Used in CI. */
   CI: boolean;
-  /** @internal Used in CI. */
-  tailwind: boolean;
-  /** @internal Used in CI. */
-  trpc: boolean;
-  /** @internal Used in CI. */
-  prisma: boolean;
-  /** @internal Used in CI. */
-  drizzle: boolean;
-  /** @internal Used in CI. */
-  nextAuth: boolean;
-  /** @internal Used in CI. */
-  appRouter: boolean;
+  
 }
 
 interface CliResults {
   appName: string;
   packages: AvailablePackages[];
   flags: CliFlags;
-  databaseProvider: DatabaseProvider;
-}
+ }
 
 const defaultOptions: CliResults = {
   appName: DEFAULT_APP_NAME,
-  packages: ["nextAuth", "prisma", "tailwind", "trpc"],
+  packages: [],
   flags: {
     noGit: false,
     noInstall: false,
     default: false,
     CI: false,
-    tailwind: false,
-    trpc: false,
-    prisma: false,
-    drizzle: false,
-    nextAuth: false,
+      
     importAlias: "~/",
-    appRouter: false,
-  },
-  databaseProvider: "sqlite",
+   },
 };
 
 export const runCli = async (): Promise<CliResults> => {
@@ -68,7 +50,7 @@ export const runCli = async (): Promise<CliResults> => {
 
   const program = new Command()
     .name(COMMAND_NAME)
-    .description("A CLI for creating web applications with the t3 stack")
+    .description("A CLI for bootstrapping a new app using pol-ui.")
     .argument(
       "[dir]",
       "The name of the application, as well as the name of the directory to create"
@@ -87,7 +69,9 @@ export const runCli = async (): Promise<CliResults> => {
       "-y, --default",
       "Bypass the CLI and use all default options to bootstrap a new t3-app",
       false
-    )
+  )
+    
+    
     /** START CI-FLAGS */
     /**
      * @experimental Used for CI E2E tests. If any of the following option-flags are provided, we
@@ -100,63 +84,29 @@ export const runCli = async (): Promise<CliResults> => {
       "Experimental: Boolean value if we should install Tailwind CSS. Must be used in conjunction with `--CI`.",
       (value) => !!value && value !== "false"
     )
-    /** @experimental Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
-    .option(
-      "--nextAuth [boolean]",
-      "Experimental: Boolean value if we should install NextAuth.js. Must be used in conjunction with `--CI`.",
-      (value) => !!value && value !== "false"
-    )
-    /** @experimental - Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
-    .option(
-      "--prisma [boolean]",
-      "Experimental: Boolean value if we should install Prisma. Must be used in conjunction with `--CI`.",
-      (value) => !!value && value !== "false"
-    )
-    /** @experimental - Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
-    .option(
-      "--drizzle [boolean]",
-      "Experimental: Boolean value if we should install Drizzle. Must be used in conjunction with `--CI`.",
-      (value) => !!value && value !== "false"
-    )
-    /** @experimental - Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
-    .option(
-      "--trpc [boolean]",
-      "Experimental: Boolean value if we should install tRPC. Must be used in conjunction with `--CI`.",
-      (value) => !!value && value !== "false"
-    )
+   
     /** @experimental - Used for CI E2E tests. Used in conjunction with `--CI` to skip prompting. */
     .option(
       "-i, --import-alias",
       "Explicitly tell the CLI to use a custom import alias",
       defaultOptions.flags.importAlias
     )
-    .option(
-      "--dbProvider [provider]",
-      `Choose a database provider to use. Possible values: ${databaseProviders.join(
-        ", "
-      )}`,
-      defaultOptions.flags.importAlias
-    )
-    .option(
-      "--appRouter [boolean]",
-      "Explicitly tell the CLI to use the new Next.js app router",
-      (value) => !!value && value !== "false"
-    )
+   
     /** END CI-FLAGS */
     .version(getVersion(), "-v, --version", "Display the version number")
     .addHelpText(
       "afterAll",
-      `\n The pol-ui was inspired by ${chalk
+      `\n Pol-ui was created by ${chalk
         .hex("#E8DCFF")
         .bold(
           "@polgubau"
         )} and has been used to build awesome fullstack applications like ${chalk
         .hex("#E24A8D")
-        .underline("https://ping.gg")} \n`
+        .underline("https://cursosAlbert.com")} \n`
     )
     .parse(process.argv);
 
-  // FIXME: TEMPORARY WARNING WHEN USING YARN 3. SEE ISSUE #57
+
   if (process.env.npm_config_user_agent?.startsWith("yarn/3")) {
     logger.warn(`  WARNING: It looks like you are using Yarn 3. This is currently not supported,
   and likely to result in a crash. Please run create-pol-ui with another
@@ -175,23 +125,8 @@ export const runCli = async (): Promise<CliResults> => {
   /** @internal Used for CI E2E tests. */
   if (cliResults.flags.CI) {
     cliResults.packages = [];
-    if (cliResults.flags.trpc) cliResults.packages.push("trpc");
-    if (cliResults.flags.tailwind) cliResults.packages.push("tailwind");
-    if (cliResults.flags.prisma) cliResults.packages.push("prisma");
-    if (cliResults.flags.drizzle) cliResults.packages.push("drizzle");
-    if (cliResults.flags.nextAuth) cliResults.packages.push("nextAuth");
-
-    if (cliResults.flags.prisma && cliResults.flags.drizzle) {
-      // We test a matrix of all possible combination of packages in CI. Checking for impossible
-      // combinations here and exiting gracefully is easier than changing the CI matrix to exclude
-      // invalid combinations. We are using an "OK" exit code so CI continues with the next combination.
-      logger.warn("Incompatible combination Prisma + Drizzle. Exiting.");
-      process.exit(0);
-    }
-
-    cliResults.databaseProvider = cliResults.packages.includes("drizzle")
-      ? "planetscale"
-      : "sqlite";
+    cliResults.packages.push("tailwind");
+ 
 
     return cliResults;
   }
