@@ -1,16 +1,15 @@
- 
 /**
  * @type {import('prettier').Config & import('prettier-plugin-tailwindcss').PluginOptions &
  *       import("@ianvs/prettier-plugin-sort-imports").PluginConfig}
  */
 const config = {
-    arrowParens: "always",
+  arrowParens: "always",
   printWidth: 80,
   singleQuote: false,
   jsxSingleQuote: false,
   semi: true,
-   tabWidth: 2,
-   plugins: [
+  tabWidth: 2,
+  plugins: [
     "@ianvs/prettier-plugin-sort-imports",
     "prettier-plugin-tailwindcss",
   ],

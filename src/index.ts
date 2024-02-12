@@ -93,9 +93,9 @@ const main = async () => {
   await logNextSteps({
     projectName: appDir,
     // packages: usePackages,
-     noInstall,
+    noInstall,
     projectDir,
-   });
+  });
 
   process.exit(0);
 };

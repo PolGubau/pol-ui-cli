@@ -5,13 +5,10 @@ import { PKG_ROOT } from "~/consts.js";
 import { installPackages } from "~/helpers/installPackages.js";
 import { scaffoldProject } from "~/helpers/scaffoldProject.js";
 import {
- 
   selectLayoutFile,
   selectPageFile,
 } from "~/helpers/selectBoilerplate.js";
-import {
-   type PkgInstallerMap,
-} from "~/installers/index.js";
+import { type PkgInstallerMap } from "~/installers/index.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
 
 interface CreateProjectOptions {
@@ -20,14 +17,14 @@ interface CreateProjectOptions {
   scopedAppName: string;
   noInstall: boolean;
   importAlias: string;
-  }
+}
 
 export const createProject = async ({
   projectName,
   scopedAppName,
   packages,
   noInstall,
- }: CreateProjectOptions) => {
+}: CreateProjectOptions) => {
   const pkgManager = getUserPkgManager();
   const projectDir = path.resolve(process.cwd(), projectName);
 
@@ -37,7 +34,7 @@ export const createProject = async ({
     projectDir,
     pkgManager,
     scopedAppName,
-    noInstall, 
+    noInstall,
   });
 
   // Install the selected packages
@@ -47,20 +44,18 @@ export const createProject = async ({
     projectDir,
     pkgManager,
     packages,
-    noInstall, 
+    noInstall,
   });
 
   // Select necessary _app,index / layout,page files
-    // Replace next.config
-    fs.copyFileSync(
-      path.join(PKG_ROOT, "template/extras/config/next-config-appdir.js"),
-      path.join(projectDir, "next.config.js")
-    );
+  // Replace next.config
+  fs.copyFileSync(
+    path.join(PKG_ROOT, "template/extras/config/next-config-appdir.js"),
+    path.join(projectDir, "next.config.js")
+  );
 
-    selectLayoutFile({ projectDir, packages });
-    selectPageFile({ projectDir, packages });
-   
+  selectLayoutFile({ projectDir, packages });
+  selectPageFile({ projectDir, packages });
 
-  
   return projectDir;
 };

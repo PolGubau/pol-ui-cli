@@ -1,4 +1,4 @@
- const config = {
+const config = {
   root: true,
   parser: "@typescript-eslint/parser",
   plugins: ["isaacscript", "import"],
@@ -12,7 +12,7 @@
     sourceType: "module",
     tsconfigRootDir: __dirname,
     project: [
-       "./tsconfig.eslint.json", // separate eslint config for the CLI since we want to lint and typecheck differently due to template files
+      "./tsconfig.eslint.json", // separate eslint config for the CLI since we want to lint and typecheck differently due to template files
     ],
   },
   overrides: [

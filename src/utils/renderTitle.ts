@@ -1,9 +1,13 @@
 import gradient from "gradient-string";
 
 import { TITLE_TEXT } from "~/consts.js";
-import { PackageManager, PackageManagers, getUserPkgManager } from "~/utils/getUserPkgManager.js";
+import {
+  getUserPkgManager,
+  PackageManager,
+  PackageManagers,
+} from "~/utils/getUserPkgManager.js";
 
- const colors = [
+const colors = [
   "#add7ff",
   "#89ddff",
   "#C3B6EA",
@@ -11,16 +15,16 @@ import { PackageManager, PackageManagers, getUserPkgManager } from "~/utils/getU
   "#d0679d",
   "#A28CE5",
 ];
- export const renderTitle = () => {
+export const renderTitle = () => {
   const t3Gradient = gradient(colors);
 
   // resolves weird behavior where the ascii is offset
-  const pkgManager:PackageManager = getUserPkgManager();
-  if (pkgManager === PackageManagers.yarn || pkgManager ===  PackageManagers.pnpm) {
+  const pkgManager: PackageManager = getUserPkgManager();
+  if (
+    pkgManager === PackageManagers.yarn ||
+    pkgManager === PackageManagers.pnpm
+  ) {
     console.log("");
   }
   console.log(t3Gradient.multiline(TITLE_TEXT));
 };
-
-
- 
