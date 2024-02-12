@@ -38,7 +38,7 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
       - name: 🥕 Logging
-        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && yarn publish
+        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}"
       - name: 🍀 Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.1
