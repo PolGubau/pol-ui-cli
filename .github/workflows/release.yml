@@ -15,13 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 👍 Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: ❇️ Setup node.js LTS
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: lts/*
           cache: "yarn"
+          always-auth: true
+          registry-url: "https://registry.npmjs.org"
 
       - name: 📥 Install NPM Dependencies
         run: yarn install --immutable
