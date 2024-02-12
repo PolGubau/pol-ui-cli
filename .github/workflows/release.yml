@@ -33,10 +33,16 @@ jobs:
 
       - name: 🧪 Build the package
         run: yarn build
-
-      - name: 🚀 Create Version PR or Publish to NPM
+      - name: setup git config
+        run: |
+          git config user.name "GitHub Actions Bot"
+          git config user.email "<>"
+      - name: 🥕 Logging
+        run: echo "//registry.npmjs.org/:_authToken=${NODE_AUTH_TOKEN}" > ~/.npmrc && yarn publish
+      - name: 🍀 Publish to NPM
         id: changesets
         uses: changesets/action@v1.4.1
+
         with:
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
