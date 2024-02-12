@@ -30,7 +30,7 @@ jobs:
       #   run: yarn format:check
 
       - name: Build the package
-        run: yarn build:cli
+        run: yarn build
 
       - name: Create Version PR or Publish to NPM
         id: changesets
