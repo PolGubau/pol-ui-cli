@@ -31,8 +31,6 @@ jobs:
       # - name: Check for errors
       #   run: yarn format:check
 
-      - name: 🧪 Build the package
-        run: yarn build
       - name: setup git config
         run: |
           git config user.name "GitHub Actions Bot"
@@ -49,7 +47,8 @@ jobs:
           commit: "chore(release): version packages"
           title: "chore(release): version packages"
           version: node .github/changeset-version.js
-          publish: npx changeset publish --access public
+          publish: yarn release
+
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
