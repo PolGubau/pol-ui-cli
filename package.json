@@ -11,6 +11,9 @@
     "url": "git+https://github.com/polgubau/create-pol-ui.git"
   },
   "author": "Pol Gubau Amores <gubaupol@gmail.com> (https://polgubau.com)",
+  "publishConfig": {
+    "access": "public"
+  },
   "homepage": "https://ui.polgubau.com",
   "keywords": [
     "pol-ui",
