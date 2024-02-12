@@ -7,10 +7,13 @@ import { logger } from "./logger.js";
 export const renderVersionWarning = (npmVersion: string) => {
   const currentVersion = getVersion();
 
-    console.log("current", currentVersion);
-    console.log("npm", npmVersion);
+    console.log("🟣 Current version:", currentVersion);
+    console.log("🟣 NPM version:", npmVersion);
 
-  if (currentVersion.includes("beta")) {
+  
+  if (currentVersion === npmVersion) {
+    logger.success("  You are using the latest version of create-pol-ui.");
+  } else if (currentVersion.includes("beta")) {
     logger.warn("  You are using a beta version of pol-ui.");
     logger.warn("  Please report any bugs you encounter.");
   } else if (currentVersion.includes("next")) {
@@ -30,14 +33,7 @@ export const renderVersionWarning = (npmVersion: string) => {
   }
   console.log("");
 };
-
-/**
- * Copyright (c) 2015-present, Facebook, Inc.
- *
- * This source code is licensed under the MIT license found in the LICENSE file in the root
- * directory of this source tree.
- * https://github.com/facebook/create-react-app/blob/main/packages/create-react-app/LICENSE
- */
+ 
 interface DistTagsBody {
   latest: string;
 }
@@ -55,19 +51,20 @@ function checkForLatestVersion(): Promise<string> {
               resolve((JSON.parse(body) as DistTagsBody).latest);
             });
           } else {
-            reject();
+            reject(new Error("Unable to fetch latest version."));
           }
         }
       )
       .on("error", () => {
         logger.error("Unable to check for latest version.");
-        reject();
+        reject(new Error("Unable to check for latest version."));
       });
   });
 }
 
 export const getNpmVersion = () =>
-  // `fetch` to the registry is faster than `npm view` so we try that first
+  // Always trying to `fetch` the registy before the `npm view` command because the fetch call is faster
+  
   checkForLatestVersion().catch(() => {
     try {
       return execSync("npm view create-pol-ui version").toString().trim();

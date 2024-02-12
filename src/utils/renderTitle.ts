@@ -1,25 +1,26 @@
 import gradient from "gradient-string";
 
 import { TITLE_TEXT } from "~/consts.js";
-import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
+import { PackageManager, PackageManagers, getUserPkgManager } from "~/utils/getUserPkgManager.js";
 
-// colors brought in from vscode poimandres theme
-const poimandresTheme = {
-  blue: "#add7ff",
-  cyan: "#89ddff",
-  green: "#5de4c7",
-  magenta: "#fae4fc",
-  red: "#d0679d",
-  yellow: "#fffac2",
-};
-
-export const renderTitle = () => {
-  const t3Gradient = gradient(Object.values(poimandresTheme));
+ const colors = [
+  "#add7ff",
+  "#89ddff",
+  "#C3B6EA",
+  "#fae4fc",
+  "#d0679d",
+  "#A28CE5",
+];
+ export const renderTitle = () => {
+  const t3Gradient = gradient(colors);
 
   // resolves weird behavior where the ascii is offset
-  const pkgManager = getUserPkgManager();
-  if (pkgManager === "yarn" || pkgManager === "pnpm") {
+  const pkgManager:PackageManager = getUserPkgManager();
+  if (pkgManager === PackageManagers.yarn || pkgManager ===  PackageManagers.pnpm) {
     console.log("");
   }
   console.log(t3Gradient.multiline(TITLE_TEXT));
 };
+
+
+ 

@@ -4,10 +4,8 @@ import { Command } from "commander";
 
 import { COMMAND_NAME, DEFAULT_APP_NAME } from "~/consts.js";
 import {
-  databaseProviders,
-  type AvailablePackages,
-  type DatabaseProvider,
-} from "~/installers/index.js";
+   type AvailablePackages,
+ } from "~/installers/index.js";
 import { getVersion } from "~/utils/getVersion.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
 import { IsTTYError } from "~/utils/isTTYError.js";
@@ -34,7 +32,7 @@ interface CliResults {
 
 const defaultOptions: CliResults = {
   appName: DEFAULT_APP_NAME,
-  packages: [],
+  packages: ['tailwind'],
   flags: {
     noGit: false,
     noInstall: false,
@@ -101,7 +99,7 @@ export const runCli = async (): Promise<CliResults> => {
         .bold(
           "@polgubau"
         )} and has been used to build awesome fullstack applications like ${chalk
-        .hex("#E24A8D")
+        .hex("#b49cff")
         .underline("https://cursosAlbert.com")} \n`
     )
     .parse(process.argv);
@@ -125,6 +123,8 @@ export const runCli = async (): Promise<CliResults> => {
   /** @internal Used for CI E2E tests. */
   if (cliResults.flags.CI) {
     cliResults.packages = [];
+
+    // Use always tailwind for now
     cliResults.packages.push("tailwind");
  
 
@@ -264,20 +264,15 @@ export const runCli = async (): Promise<CliResults> => {
 
     const packages: AvailablePackages[] = [];
     if (project.styling) packages.push("tailwind");
-    if (project.trpc) packages.push("trpc");
-    if (project.authentication === "next-auth") packages.push("nextAuth");
-    if (project.database === "prisma") packages.push("prisma");
-    if (project.database === "drizzle") packages.push("drizzle");
+    //  add more packages here if needed
 
     return {
       appName: project.name ?? cliResults.appName,
       packages,
-      databaseProvider:
-        (project.databaseProvider as DatabaseProvider) || "sqlite",
+   
       flags: {
         ...cliResults.flags,
-        appRouter: project.appRouter ?? cliResults.flags.appRouter,
-        noGit: !project.git || cliResults.flags.noGit,
+         noGit: !project.git || cliResults.flags.noGit,
         noInstall: !project.install || cliResults.flags.noInstall,
         importAlias: project.importAlias ?? cliResults.flags.importAlias,
       },

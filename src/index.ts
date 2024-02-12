@@ -36,11 +36,11 @@ const main = async () => {
   const {
     appName,
     packages,
-    flags: { noGit, noInstall, importAlias, appRouter },
-    databaseProvider,
+    flags: { noGit, noInstall, importAlias },
+    
   } = await runCli();
 
-  const usePackages = buildPkgInstallerMap(packages, databaseProvider);
+  const usePackages = buildPkgInstallerMap(packages);
 
   // e.g. dir/@mono/app returns ["@mono/app", "dir/app"]
   const [scopedAppName, appDir] = parseNameAndPath(appName);
@@ -49,10 +49,8 @@ const main = async () => {
     projectName: appDir,
     scopedAppName,
     packages: usePackages,
-    databaseProvider,
     importAlias,
     noInstall,
-    appRouter,
   });
 
   // Write name to package.json
@@ -95,12 +93,10 @@ const main = async () => {
 
   await logNextSteps({
     projectName: appDir,
-    packages: usePackages,
-    appRouter,
-    noInstall,
+    // packages: usePackages,
+     noInstall,
     projectDir,
-    databaseProvider,
-  });
+   });
 
   process.exit(0);
 };
