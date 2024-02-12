@@ -1579,7 +1579,7 @@ __metadata:
     type-fest: "npm:^3.7.0"
     typescript: "npm:^5.0.4"
   bin:
-    create-pol-ui: ./dist/index.js
+    create-pol-ui: dist/index.js
   languageName: unknown
   linkType: soft
 
