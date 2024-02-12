@@ -56,7 +56,7 @@ const getDefaultBranch = () => {
 
 // This initializes the Git-repository for the project
 export const initializeGit = async (projectDir: string) => {
-  logger.info("Initializing Git...");
+  logger.info("🥕 Initializing Git...");
 
   if (!isGitInstalled(projectDir)) {
     logger.warn("Git is not installed. Skipping Git initialization.");

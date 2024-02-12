@@ -8,7 +8,7 @@ import {
   type AvailablePackages,
   type DatabaseProvider,
 } from "~/installers/index.js";
-import { getVersion } from "~/utils/getT3Version.js";
+import { getVersion } from "~/utils/getVersion.js";
 import { getUserPkgManager } from "~/utils/getUserPkgManager.js";
 import { IsTTYError } from "~/utils/isTTYError.js";
 import { logger } from "~/utils/logger.js";
@@ -146,10 +146,10 @@ export const runCli = async (): Promise<CliResults> => {
     .version(getVersion(), "-v, --version", "Display the version number")
     .addHelpText(
       "afterAll",
-      `\n The t3 stack was inspired by ${chalk
+      `\n The pol-ui was inspired by ${chalk
         .hex("#E8DCFF")
         .bold(
-          "@t3dotgg"
+          "@polgubau"
         )} and has been used to build awesome fullstack applications like ${chalk
         .hex("#E24A8D")
         .underline("https://ping.gg")} \n`
